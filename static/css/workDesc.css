@@ -1,0 +1,29 @@
+.fullDescriptionHead {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fullDescription {
+    width: 850px;
+    height: 510px;
+    font-size: 20px;
+    overflow-y: scroll;
+    border: solid 3px #6ab1e7;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #d6d6d6;
+}
+
+.fullDescription::-webkit-scrollbar {
+    display: none;
+}
+
+.respond {
+    width: 200px;
+    height: 50px;
+    margin-top: 5px;
+    background-color: #56e975;
+    font-size: 20px;
+}
