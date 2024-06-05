@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="static/css/registration.css">
+</head>
+<body>
+    <div class="regDiv">
+    <h1>Регистрация</h1>
+        <form class="main" action="{{ url_for('submit_registration') }}" method="post">
+            <div class="names">
+                <p class="loginP">Фамилия </p>
+                <p class="loginP">Имя </p>
+                <p class="loginP">Отчество </p>
+                <p class="loginP">Дата рождения </p>
+                <p class="loginP">Номер телефона </p>
+                <p class="loginP">Придумайте логин </p>
+                <p class="loginP">Придумайте Пароль </p>
+                <p class="loginP">Повторите пароль </p>
+            </div>
+            <div class="inputs">
+                <input type="text" name="last_name" placeholder="Фамилия" required>
+                <input type="text" name="first_name" placeholder="Имя" required>
+                <input type="text" name="patronymic" placeholder="Отчество" required>
+                <input type="date" name="birth_date" min="1930-01-01" max="2006-12-31" placeholder="Дата рождения" required>
+                <input type="text" name="phone" placeholder="Номер телефона" required>
+                <input type="text" name="username" placeholder="Придумайте логин" required>
+                <input type="password" name="password" placeholder="Введите пароль" required>
+                <input type="password" name="confirm_password" placeholder="Повторите пароль" required>
+            </div>
+            <div class="buttons">
+                <button type="submit">Зарегистрироваться</button>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

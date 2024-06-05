@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создать объявление</title>
+    <link rel="stylesheet" href="static/css/menu.css">
+    <link rel="stylesheet" href="static/css/createWork.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+<form class="mainCreateAd" action="{{ url_for('submit_work') }}" method="POST">
+    <div class="createAd">
+        <div class="names">
+            <p>Название профессии: </p>
+            <p>Краткое описание: </p>
+            <p>Актуальность: </p>
+            <p>Полное описание: </p>
+            <p>Заработная плата: </p>
+            <p>Название организации: </p>
+            <p>Вид оплаты: </p>
+            <p>Кол-во рабочих мест: </p>
+            <p>Необходимое образование: </p>
+            <p>Обязанности: </p>
+            <p>Доп. требования: </p>
+            <p>Рабочие часы: </p>
+        </div>
+        <div class="inputs">
+            <input type="text" name="name" required>
+            <input type="text" name="description" required>
+            <input type="date" id="myDate" value="" name="active" readonly required>
+            <input type="text" name="fullDesc" required>
+            <input type="text" name="review" required>
+            <input type="text" name="organization" required>
+            <input type="text" name="paySystem" required>
+            <input type="text" name="workPlaces" required>
+            <input type="text" name="education" required>
+            <input type="text" name="responsibilities" required>
+            <input type="text" name="additionally" required>
+            <input type="text" name="workTime" required>
+        </div>
+        <div class="buttons">
+            <button class="ok" type="submit">Создать объявление</button>
+        </div>
+
+
+    </div>
+</form>
+    <script>
+            var currentDate = new Date();
+
+    // Форматируем дату в строку в формате "YYYY-MM-DD"
+    var formattedDate = currentDate.toISOString().slice(0,10);
+
+    // Присваиваем отформатированную дату атрибуту value элемента input
+    document.getElementById("myDate").value = formattedDate;
+    </script>
+    <script src="static/js/menu.js"></script>
+</body>
+</html>

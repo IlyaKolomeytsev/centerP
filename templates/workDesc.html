@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <link rel="stylesheet" href="static/css/menu.css">
+     <link rel="stylesheet" href="static/css/workDesc.css">
+    <title>Details</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fullDescriptionHead">
+        <div class="fullDescription">
+            <p><strong>Профессия: </strong>{{ title }}</p>
+            <p><strong>Дата публикации: </strong>{{ active }}</p>
+            <p><strong>Описание: </strong>{{ fullDesc }}</p>
+            <p><strong>Заработная плата: </strong>{{ review }}</p>
+            <p><strong>Организация: </strong>{{ organization }}</p>
+            <p><strong>Система оплаты: </strong>{{ paySystem }}</p>
+            <p><strong>Количество рабочих мест: </strong>{{ workPlaces }}</p>
+            <p><strong>Образование: </strong>{{ education }}</p>
+            <p><strong>Должностные обязанности: </strong>{{ responsibilities }}</p>
+            <p><strong>Дополнительные пожелания: </strong>{{ additionally }}</p>
+            <p><strong>Время работы: </strong>{{ workTime }}</p>
+        </div>
+        <button id="applyButton" class="respond">Откликнуться</button>
+    </div>
+<script>
+    document.getElementById("applyButton").addEventListener("click", function() {
+        // Проверяем, авторизован ли пользователь
+        fetch('/check_auth')  // Отправляем GET-запрос на сервер для проверки авторизации
+            .then(response => response.json())
+            .then(data => {
+                if (data.authenticated) {
+                    // Если пользователь авторизован, получаем данные о резюме
+                    const resumeData = {
+                        id: "{{ id }}",
+                        title: "{{ title }}",
+                        description: "{{ description }}",
+                        active: "{{ active }}",
+                        fullDesc: "{{ fullDesc }}",
+                        review: "{{ review }}",
+                        organization: "{{ organization }}",
+                        paySystem: "{{ paySystem }}",
+                        workPlaces: "{{ workPlaces }}",
+                        education: "{{ education }}",
+                        responsibilities: "{{ responsibilities }}",
+                        additionally: "{{ additionally }}",
+                        workTime: "{{ workTime }}"
+                    };
+
+                    // Кодируем данные о резюме в строку URL и добавляем их в ссылку
+                    const queryString = new URLSearchParams(resumeData).toString();
+                    window.location.href = "/apply_form?" + queryString;
+                } else {
+                    // Если пользователь не авторизован, перенаправляем на страницу входа
+                    window.location.href = "/login_page";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
+
+
+    <script src="static/js/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Отклик на вакансию</title>
+    <link rel="stylesheet" href="static/css/menu.css">
+    <link rel="stylesheet" href="static/css/apply_form.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="center">
+        <form class="main" action="/submit_application" method="post" enctype="multipart/form-data">
+            <h1><strong>Отклик на вакансию</strong></h1>
+            <p><strong>Здесь вы можете отправить свой отклик работодателю на выбранную вакансию<br> и проверить правильность своего резюме</strong></p>
+
+            <!-- Скрытое поле для прикрепления файла с предварительно указанным значением -->
+            <input type="hidden" name="resume_id" value="{{ resume_id }}">
+
+            <!-- Скачать резюме, если оно доступно -->
+            {% if resume_data %}
+                <a href="{{ url_for('download_res', username=resume_data[0]) }}" download="{{ resume_data[0] }}.pdf" class="dow">Проверить резюме</a>
+            {% endif %}
+
+            <!-- Другие поля формы (например, поле для ввода комментария) -->
+            <textarea name="comment" id="comment" cols="30" rows="5" placeholder="Оставьте комментарий к своему резюме здесь..." maxlength="300" autofocus required></textarea>
+
+            <!-- Кнопка отправки формы -->
+            <button type="submit" class="send">Отправить отклик</button>
+        </form>
+    </div>
+    <script src="static/js/menu.js"></script>
+</body>
+</html>

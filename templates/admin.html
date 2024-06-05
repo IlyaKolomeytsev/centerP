@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<div class="container">
+        <div class="logout">
+            <a href="{{ url_for('admin_logout') }}">Выйти</a>
+        </div>
+        <h1>Админ Панель</h1>
+        <div class="pending-ads fullDescriptionHead">
+            {% for ad in ads %}
+            <div class="ad fullDescription">
+                <p><strong>Профессия:</strong> {{ ad.name }}</p>
+                <p><strong>Описание:</strong> {{ ad.description }}</p>
+                <p><strong>Дата актуальности:</strong> {{ ad.active }}</p>
+                <p><strong>Полное описание:</strong> {{ ad.fullDesc }}</p>
+                <p><strong>Заработная плата:</strong> {{ ad.review }}</p>
+                <p><strong>Организация:</strong> {{ ad.organization }}</p>
+                <p><strong>Система оплаты:</strong> {{ ad.paySystem }}</p>
+                <p><strong>Количество рабочих мест:</strong> {{ ad.workPlaces }}</p>
+                <p><strong>Образование:</strong> {{ ad.education }}</p>
+                <p><strong>Обязанности:</strong> {{ ad.responsibilities }}</p>
+                <p><strong>Дополнительные требования:</strong> {{ ad.additionally }}</p>
+                <p><strong>Рабочие часы:</strong> {{ ad.workTime }}</p>
+                <button onclick="approveAd({{ ad.id }})" class="employer">Утвердить</button>
+                <button onclick="rejectAd({{ ad.id }})" class="exit">Отклонить</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+<script>
+    function approveAd(id) {
+        fetch(`/admin/approve/${id}`, {
+            method: 'POST'
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+
+    function rejectAd(id) {
+        fetch(`/admin/reject/${id}`, {
+            method: 'POST'
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+</script>
+</body>
+</html>

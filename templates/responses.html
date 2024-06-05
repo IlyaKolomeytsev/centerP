@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/css/profile.css">
+    <link rel="stylesheet" href="static/css/menu.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="headData">
+    <div class="h">
+    <h2>Откликнулись на вашу вакансию:</h2>
+    <div class="vac">
+        {% if responses %}
+            {% for response in responses %}
+                <div class="data">
+                    <div class="vacancy">
+                        <p><strong>Фамилия пользователя:</strong> {{ response[5] }}</p>
+                        <p><strong>Название вакансии:</strong> {{ response[4] }}</p>
+                        <p><strong>Комментарий пользователя:</strong> {{ response[3] }}</p>
+                        <p><strong>Номер телефона:</strong> {{ response[6] }}</p>
+                        {% if response[1] %}
+                            <a href="{{ url_for('download_response', username=response[1]) }}" download="{{ response[1] }}.pdf" class="dow">Проверить резюме</a>
+                        {% endif %}
+                        <p class="accept">{{ response[7] }}</p>
+                        <form action="/accept_response" method="post">
+                            <input type="hidden" name="response_id" value="{{ response[0] }}">
+                            <button type="submit" class="confirm">Принять</button>
+                        </form>
+                        <form action="/delete_response" method="post">
+                            <input type="hidden" name="response_id" value="{{ response[0] }}">
+                            <button type="submit" class="delete">Отклонить отклик</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>На ваши вакансии пока никто не откликнулся.</p>
+        {% endif %}
+    </div>
+    </div>
+    </div>
+</body>
+</html>

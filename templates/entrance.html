@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="static/css/entrance.css">
+</head>
+<body>
+<div class="entranceDiv">
+    <h3>Вход</h3>
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    <form class="f" action="{{ url_for('login') }}?next={{ request.url }}" method="post">
+        <p class="loginP">Логин <input type="text" name="username" placeholder="Введите логин" required></p>
+        <p class="loginP">Пароль <input type="password" name="password" placeholder="Введите пароль" required></p>
+        <button type="submit">Войти</button>
+    </form>
+    <p class="regP">Ещё не зарегистрированы?</p>
+    <form action="{{ url_for('submit_reg') }}" method="post">
+        <button type="submit">Регистрация</button>
+    </form>
+</div>
+
+</body>
+</html>

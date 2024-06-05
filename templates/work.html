@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work</title>
+    <link rel="stylesheet" href="static/css/work.css">
+    <link rel="stylesheet" href="static/css/menu.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="search-bar">
+            <p>Поиск по названию профессии <input type="text" id="searchInput" placeholder="Введите название профессии..."></p>
+        </div>
+    <div class="headData" id="vacanciesContainer">
+
+        {% for row in data %}
+        <div class="data">
+            <p><strong>Профессия:</strong> {{ row[1] }}</p>
+            <p><strong>Описание:</strong> {{ row[2] }}</p>
+            <p><strong>Дата актуальности:</strong> {{ row[3] }}</p>
+            <div class="view">
+                <p><strong>Зарплата:</strong> {{ row[6] }}</p>
+                <p><strong>&#128065;</strong> {{ row[5] }}</p>
+            </div>
+            <button onclick="redirectToDetails('{{ row[0] }}', '{{ row[1] }}', '{{ row[2] }}', '{{ row[3] }}', '{{ row[4] }}', '{{ row[5] }}', '{{ row[6] }}', '{{ row[7] }}', '{{ row[8] }}', '{{ row[9] }}', '{{ row[10] }}', '{{ row[11] }}', '{{ row[12] }}', '{{ row[13] }}')">Подробнее</button>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        function redirectToDetails(id, title, description, active, fullDesc, numberView, review, organization, paySystem, workPlaces, education, responsibilities, additionally, workTime) {
+            window.location.href = '/go?id=' + id + '&title=' + encodeURIComponent(title) + '&description=' + encodeURIComponent(description) + '&fullDesc=' + encodeURIComponent(fullDesc) + '&numberView=' + encodeURIComponent(numberView) + '&review=' + encodeURIComponent(review) + '&active=' + active + '&organization=' + encodeURIComponent(organization) + '&paySystem=' + encodeURIComponent(paySystem) + '&workPlaces=' + encodeURIComponent(workPlaces) + '&education=' + encodeURIComponent(education) + '&responsibilities=' + encodeURIComponent(responsibilities) + '&additionally=' + encodeURIComponent(additionally) + '&workTime=' + encodeURIComponent(workTime);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const vacanciesContainer = document.getElementById('vacanciesContainer');
+    const vacancies = Array.from(vacanciesContainer.getElementsByClassName('data'));
+
+    searchInput.addEventListener('input', function() {
+        const filter = searchInput.value.toLowerCase();
+        vacancies.forEach(function(vacancy) {
+            const profession = vacancy.getElementsByTagName('p')[0].textContent.toLowerCase();
+            if (profession.includes(filter)) {
+                vacancy.style.display = '';
+            } else {
+                vacancy.style.display = 'none';
+            }
+        });
+    });
+});
+    </script>
+<script src="static/js/menu.js"></script>
+</body>
+</html>

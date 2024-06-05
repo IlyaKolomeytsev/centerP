@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Резюме</title>
+    <link rel="stylesheet" href="static/css/summary.css">
+    <link rel="stylesheet" href="static/css/menu.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainSummary">
+        <div class="summary">
+            <form class="sum" action="/upload_file" method="post" enctype="multipart/form-data">
+                <p>На данной странице вы можете прикрепить своё резюме, чтобы работодатели могли его просматривать</p>
+                <div>
+                    <a href="{{ url_for('download_file', filename='Пример оформления резюме.docx') }}">Пример оформления резюме.docx</a>
+                </div>
+                <p class="warn">Только в формате pdf!</p>
+                <input type="file" name="file" id="file" accept="application/pdf">
+                <label for="file"></label>
+                <button class="respond" type="submit">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <script src="static/js/menu.js"></script>
+</body>
+</html>

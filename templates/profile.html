@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+        <link rel="stylesheet" href="static/css/profile.css">
+        <link rel="stylesheet" href="static/css/menu.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Центр занятости города Заречный</h1>
+    </div>
+    <div class="experience">
+        <div class="menu box box3">
+            <form action="{{ url_for('menu') }}" method="post">
+                <button class="four">На главную</button>
+            </form>
+            <button class="one">Гражданам</button>
+            <button class="two">Работодателям</button>
+
+            <button class="three">ТК РФ</button>
+            {% if 'username' not in session %}
+                <form action="{{ url_for('login_page') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            {% if 'username' in session %}
+                <form action="{{ url_for('profile') }}" method="post">
+                    <button type="submit">Личный кабинет</button>
+                </form>
+            {% endif %}
+            <div class="citizensP">
+                <div class="citizensPDiv">
+                    <a class="contentDiv" href="/searchWork">Просмотр вакансий</a>
+                    <a class="contentDiv" href="/summary">Оставить резюме</a>
+                    <!--<a class="contentDiv" href="">Информация 3</a>
+                    <a class="contentDiv" href="">Информация 4</a>-->
+                </div>
+            </div>
+            <div class="citizensPWork">
+                <div class="citizensPDivWork">
+                    <a class="contentDiv1" href="/search_worked">Найти сотрудников</a>
+                    <a class="contentDiv1" href="/create_work">Создать объявление</a>
+                    <!--<a class="contentDiv1" href="">Информация 3</a>
+                    <a class="contentDiv1" href="">Информация 4</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="headData">
+    <div class="h">
+        <h2>Добрый день, {{ user[2] }}!</h2>
+        <div class="data one">
+            <p><strong>Личные данные</strong></p>
+            <p><strong>Логин: </strong>{{ user[6] }}</p>
+            <p><strong>ФИО: </strong>{{ user[1] }} {{ user[2] }} {{ user[3] }}</p>
+            <p><strong>Дата рождения: </strong>{{ user[4] }}</p>
+            <p><strong>Номер телефона: </strong>{{ user[5] }}</p>
+        </div>
+
+    <div class="mainSummary">
+        <div class="summary">
+            <p>Здесь будет ваше резюме: </p>
+            {% if resume_data %}
+                <a href="{{ url_for('download_res', username=resume_data[0]) }}" download="{{ resume_data[0] }}.pdf">{{ user[6] }}.pdf</a>
+            {% endif %}
+        </div>
+    </div>
+    <h2>Ваши вакансии: </h2>
+
+        {% if vacancies %}
+                {% for vacancy in vacancies %}
+                <div class="data">
+                    <div class="vacancy">
+                        <p><strong>Профессия:</strong> {{ vacancy[1] }}</p>
+                        <p><strong>Описание:</strong> {{ vacancy[4] }}</p>
+                        <p><strong>Дата публикации:</strong> {{ vacancy[3] }}</p>
+                        <p><strong>З/П:</strong> {{ vacancy[6] }}</p>
+                        <p><strong>Организация:</strong> {{ vacancy[7] }}</p>
+                        <p><strong>Вид оплаты:</strong> {{ vacancy[8] }}</p>
+                        <p><strong>Кол-во мест:</strong> {{ vacancy[9] }}</p>
+                        <p><strong>Образование:</strong> {{ vacancy[10] }}</p>
+                        <p><strong>Обязанности:</strong> {{ vacancy[11] }}</p>
+                        <p><strong>Доп. требования:</strong> {{ vacancy[12] }}</p>
+                        <p><strong>Время работы:</strong> {{ vacancy[13] }}</p>
+                            <form action="/delete_vacancy" method="post">
+                            <input type="hidden" name="vacancy_id" value="{{ vacancy[0] }}">
+                            <button type="submit" class="delete">Удалить вакансию</button>
+                        </form>
+                        <!-- Другие данные о вакансии, которые вы хотите отобразить -->
+                    </div>
+                </div>
+                {% endfor %}
+        {% else %}
+            <p>У вас пока нет созданных вакансий.</p>
+        {% endif %}
+
+    <!--<h2>Откликнулись на вашу вакансию:</h2>
+    <div class="vac">
+        {% if responses %}
+            {% for response in responses %}
+                <div class="data">
+                    <div class="vacancy">
+                        <p><strong>Фамилия пользователя:</strong> {{ response[5] }}</p>
+                        <p><strong>Название вакансии:</strong> {{ response[4] }}</p>
+                        <p><strong>Комментарий пользователя:</strong> {{ response[3] }}</p>
+                        <p><strong>Номер телефона:</strong> {{ response[6] }}</p>
+                        {% if response[1] %}
+                            <a href="{{ url_for('download_response', username=response[1]) }}" download="{{ response[1] }}.pdf" class="dow">Проверить резюме</a>
+                        {% endif %}
+                        <p class="accept">{{ response[7] }}</p>
+                        <form action="/accept_response" method="post">
+                            <input type="hidden" name="response_id" value="{{ response[0] }}">
+                            <button type="submit" class="confirm">Принять</button>
+                        </form>
+                        <form action="/delete_response" method="post">
+                            <input type="hidden" name="response_id" value="{{ response[0] }}">
+                            <button type="submit" class="delete">Отклонить отклик</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>На вашу вакансию пока никто не откликнулся.</p>
+        {% endif %}
+    </div>-->
+    <a href="{{ url_for('show_responses') }}">
+        <button class="employer">Показать отклики</button>
+    </a>
+
+    <button class="employer" id="eee">Стать Работодателем</button>
+    <div class="mainConfEmp">
+        <div class="confEmp">
+                <form class="emp" action="{{ url_for('submit_employer') }}" method="post">
+                    <div class="names">
+                        <p>Название организации</p>
+                        <p>Вид деятельности</p>
+                        <p>Адрес</p>
+                        <p>Телефон</p>
+                        <p>Фамилия руководителя</p>
+                    </div>
+                    <div class="inputs">
+                        <input type="text" name="name_organization" value="{{ user[12] }}" required>
+                        <input type="text" name="activity" value="{{ user[13] }}" required>
+                        <input type="text" name="address" value="{{ user[14] }}" required>
+                        <input type="text" name="phone_number" value="{{ user[15] }}" required>
+                        <input type="text" name="FIO_boss" value="{{ user[16] }}" required>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit" class="ok">Подтвердить</button>
+                        <button type="button" class="close">Закрыть</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+    {% if is_employer %}
+        <form action="{{ url_for('create_work') }}" method="GET">
+            <button type="submit" class="employer">Создать объявление</button>
+        </form>
+    {% endif %}
+    {% if 'username' in session %}
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit" class="exit">Выход</button>
+        </form>
+    {% endif %}
+    </div>
+    </div>
+    <script>
+        var employer = document.getElementById('eee');
+        var close = document.querySelectorAll('.close')[0];
+        var mainConfEmp = document.querySelectorAll('.mainConfEmp')[0];
+
+        function employerFunc() {
+            mainConfEmp.classList.toggle('visible');
+        }
+
+        employer.addEventListener('click', employerFunc);
+        close.addEventListener('click', employerFunc);
+    </script>
+    <script src="static/js/menu.js"></script>
+</body>
+</html>

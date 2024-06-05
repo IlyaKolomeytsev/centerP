@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <div class="log">
+            <form action="{{ url_for('admin_panel') }}" class="auth" method="post">
+                <p>Доступ администратора</p>
+                <input type="text" name="username" placeholder="Введите логин" class="in1" required>
+                <input type="password" name="password" placeholder="Введите пароль" class="in2" required>
+                <button type="submit" class="btA">Войти</button>
+            </form>
+    </div>
+</body>
+</html>
